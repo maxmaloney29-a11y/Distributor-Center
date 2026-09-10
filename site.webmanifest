@@ -1,0 +1,13 @@
+{
+  "name": "Force USA Dealer Zone",
+  "short_name": "Dealer Zone",
+  "description": "Troubleshooting guides, warranty claims, sell sheets and account performance for Force USA distributors.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#081C28",
+  "theme_color": "#081C28",
+  "icons": [
+    { "src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard · Force USA Dealer Zone</title>
+<meta name="description" content="The Force USA Dealer Zone: troubleshooting guides, warranty claims, sell sheets, marketing assets and your account performance in one place.">
+<meta name="theme-color" content="#081C28">
+<meta name="color-scheme" content="dark">
+
+<meta property="og:title" content="Force USA Dealer Zone">
+<meta property="og:description" content="Troubleshooting guides, warranty claims, sell sheets and account performance for Force USA distributors.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/og-card.svg">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sofia+Sans:wght@700;900&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="masthead__brand">
+    <img class="masthead__logo" src="assets/img/logo.svg" alt="Force USA" width="140" height="42">
+    <span class="masthead__rule" aria-hidden="true"></span>
+    <span class="masthead__zone">Dealer Zone</span>
+  </div>
+
+  <div class="masthead__right">
+    <button type="button" class="nav-toggle" id="nav-toggle" data-action="toggle-nav"
+            aria-controls="sidebar" aria-expanded="false">Menu</button>
+
+    <form class="searchbox" role="search" data-action="search-form">
+      <span class="searchbox__icon" aria-hidden="true">&#9906;</span>
+      <label class="visually-hidden" for="site-search">Search the dealer zone</label>
+      <input type="search" id="site-search" name="q" placeholder="Search products, guides, claims" autocomplete="off">
+    </form>
+
+    <div class="whoami">
+      <div class="whoami__text">
+        <div class="whoami__name" id="who-name">GAF Inc</div>
+        <div class="whoami__role" id="who-role">Distributor</div>
+      </div>
+      <div class="whoami__avatar" id="who-avatar" aria-hidden="true">GA</div>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="sidebar" id="sidebar" aria-label="Dealer zone sections">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="content" id="main">
+    <noscript>
+      <div class="empty">
+        <h1 style="margin-bottom:12px">JavaScript required</h1>
+        <p>The Dealer Zone renders its screens in the browser. Enable JavaScript, or contact your Force USA rep
+        for the documents you need.</p>
+      </div>
+    </noscript>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <span>&copy; <span id="year">2026</span> Force USA · Dealer Zone</span>
+  <span>Demo build · account data is stored in this browser only</span>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

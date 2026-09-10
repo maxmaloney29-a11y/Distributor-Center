@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 84" role="img" aria-label="Force USA">
+  <rect width="280" height="84" fill="none"/>
+  <path d="M6 14h30v56H6z" fill="#00AC75"/>
+  <path d="M14 26h14v8H14zM14 40h10v8H14z" fill="#081C28"/>
+  <text x="48" y="46" font-family="'Sofia Sans',Impact,sans-serif" font-weight="900" font-size="34"
+        letter-spacing="2" fill="#E6EAF1">FORCE</text>
+  <text x="48" y="70" font-family="'Sofia Sans',Impact,sans-serif" font-weight="900" font-size="20"
+        letter-spacing="7" fill="#00AC75">USA</text>
+</svg>

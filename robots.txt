@@ -1,0 +1,3 @@
+# The Dealer Zone is a partner portal, not a public marketing site.
+User-agent: *
+Disallow: /
