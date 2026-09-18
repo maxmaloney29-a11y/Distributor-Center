@@ -925,6 +925,45 @@ html{scroll-padding-top:calc(var(--hdr-h) + 24px)}
 .top-row{grid-template-columns:auto minmax(0,1fr) auto !important;column-gap:clamp(12px,2vw,40px)}
 .top .tabs{justify-content:safe center}
 
+
+/* ---------- Serial number card ---------- */
+.serial{display:flex;gap:var(--s3);align-items:flex-start;border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:var(--s3) var(--s4);background:var(--surface-2)}
+.serial .ic{color:var(--site-green);margin-top:2px}
+.serial b{display:block}
+/* ---------- Updates ---------- */
+.upd{display:grid;gap:var(--s2);border:1px solid var(--line);border-left:3px solid var(--site-green);border-radius:var(--r-md);background:var(--surface);padding:var(--s4);text-align:left}
+.upd .when{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.upd h3{margin:0;font-size:18px;line-height:1.3}
+.upd p{margin:0;color:var(--text-2);font-size:15px}
+.upd .tags{display:flex;flex-wrap:wrap;gap:6px}
+.badge.new{background:var(--site-green-btn);color:#fff}
+.upd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:var(--s3)}
+.upd-note{border:1px solid var(--ok-line);background:var(--ok-bg);border-radius:var(--r-md);padding:var(--s3) var(--s4);margin-bottom:var(--s4)}
+/* ---------- Insights ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s3);margin:var(--s4) 0}
+.kpi{border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s4);background:var(--surface)}
+.kpi b{display:block;font-size:34px;font-weight:800;line-height:1;color:var(--site-green);font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--text-2)}
+.ins-cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
+.bars{display:grid;gap:10px;margin-top:var(--s3)}
+.bar{display:grid;grid-template-columns:1fr auto;gap:4px var(--s3);align-items:center}
+.bar .lbl{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .n{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px}
+.bar .track{grid-column:1/-1;height:8px;border-radius:8px;background:var(--surface-3);overflow:hidden}
+.bar .track i{display:block;height:100%;background:var(--site-green);border-radius:8px;transition:width .5s var(--ease)}
+@media (max-width:768px){.ins-cols{grid-template-columns:1fr}}
+
+
+/* ---------- Import parts list ---------- */
+.imp{border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-2);padding:var(--s4);margin-top:var(--s4);display:grid;gap:var(--s3)}
+.imp .drop{padding:var(--s4);min-height:0}
+.imp .prev{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface)}
+.imp .prev table{width:100%;border-collapse:collapse;font-size:14px}
+.imp .prev th{position:sticky;top:0;background:var(--surface);z-index:1}
+.imp .prev td,.imp .prev th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.imp .prev select,.imp .prev input[type=text]{min-height:34px;font-size:13px;padding:4px 8px;border-radius:6px;border:1px solid var(--line-strong);background:var(--surface);width:100%}
+
+
 </style>
 </head>
 <body>
@@ -1018,7 +1057,7 @@ html{scroll-padding-top:calc(var(--hdr-h) + 24px)}
           <p class="lede">Diagnose faults, find manuals and handle missing parts while the customer is still on the line.</p>
           <div class="row">
             <button class="btn primary" data-nav="fault">Start diagnosing</button>
-            <button class="btn blue" id="heroSearch">Search the hub</button>
+            <button class="btn blue" id="heroSearch">Find a model or part</button>
           </div>
         </div>
       </div>
@@ -1063,6 +1102,12 @@ html{scroll-padding-top:calc(var(--hdr-h) + 24px)}
         </div>
         <div class="sym-grid stagger" id="commonFaults"></div>
         <div class="row" style="justify-content:center;margin-top:var(--s5)"><button class="btn primary" data-nav="fault">All fault paths</button></div>
+      </div>
+    </section>
+    <section class="block dark" id="updatesWrap" hidden>
+      <div class="wrap">
+        <div class="sec-head center"><h2 class="display">New fixes &amp; updates</h2><p>Newly published resolutions and service bulletins.</p></div>
+        <div class="upd-grid stagger" id="updatesGrid"></div>
       </div>
     </section>
     <section class="block" id="recentWrap" hidden>
@@ -1630,8 +1675,7 @@ const MISSING = {
     mp("Pulley carriage pop-pins", "Moving parts", "yes", "Pre-installed on each pulley carriage.", "Knurled pull-knob with a spring-loaded steel pin.", []),
     mp("Stabiliser pads & rubber feet", "Frame & structure", "partial", "Some pads are pre-fitted under the base. Loose pads are in the hardware bags.", "Black rubber pads or feet with a bolt or adhesive back.", ["Photo underneath the base frame"]),
     mp("Handles, straps & lat bar", "Attachments & accessories", "no", "Accessory box, usually the smallest box in the shipment [BOX REF].", "Black steel handles with rubber grips, nylon ankle straps and a straight or angled lat bar.", ["Photo of the accessory box contents laid out"]),
-    mp("Bench / seat pads", "Upholstery & pads", "no", "Separate upholstery box [BOX REF], or with the bench if one was ordered as a bundle.", "Black vinyl pads on timber bases with threaded inserts.", []),
-    mp("Floor anchor bolts", "Hardware packs", "not", "Not supplied. Floor fixings depend on the floor type and are sourced locally.", "", [])
+    mp("Bench / seat pads", "Upholstery & pads", "no", "Separate upholstery box [BOX REF], or with the bench if one was ordered as a bundle.", "Black vinyl pads on timber bases with threaded inserts.", [])
   ],
   selector: [
     mp("Assembly hardware", "Hardware packs", "no", "Labelled hardware bags inside the frame box [BOX REF].", "Clear bags with printed step labels.", ["Photo of every hardware bag with labels readable"]),
@@ -1649,8 +1693,7 @@ const MISSING = {
     mp("Safety stop handles", "Moving parts", "partial", "The safety mechanism is fitted. Handles may be packed loose in the hardware box.", "Black steel levers with rubber grips.", ["Photo of both sides of the carriage"]),
     mp("Footplate", "Frame & structure", "no", "Separate box, or strapped to the carriage [BOX REF].", "Large black steel plate with a diamond-tread surface.", []),
     mp("Back rest & shoulder pads", "Upholstery & pads", "no", "Upholstery box [BOX REF].", "Black vinyl pads.", ["Photo of the upholstery box contents"]),
-    mp("Plate storage horns", "Frame & structure", "partial", "Some horns are welded on. Bolt-on horns are in the hardware box.", "Round steel posts with a plastic sleeve.", []),
-    mp("Weight plates", "Attachments & accessories", "not", "Not included. Plate-loaded machines need plates bought separately.", "", [])
+    mp("Plate storage horns", "Frame & structure", "partial", "Some horns are welded on. Bolt-on horns are in the hardware box.", "Round steel posts with a plastic sleeve.", [])
   ],
   airbike: [
     mp("Assembly hardware & tool", "Hardware packs", "no", "Small hardware card or bag with the multi-tool, in the main box.", "Blister card or bag with bolts, washers and a combination spanner.", ["Photo of the hardware card or bag"]),
@@ -1658,7 +1701,6 @@ const MISSING = {
     mp("Handle arms", "Moving parts", "no", "In the main box, wrapped in foam alongside the frame.", "Long black steel arms with rubber grips.", []),
     mp("Console & cable", "Electronics", "no", "Packed in its own small box inside the main carton.", "Black LCD console with a connector cable on the back.", ["Photo of the console mount area on the frame"]),
     mp("Seat", "Upholstery & pads", "no", "In the main box, wrapped separately.", "Black padded bike seat with a rail clamp.", []),
-    mp("Batteries", "Electronics", "not", "Check the manual. Batteries are not always included.", "", []),
     mp("Fan guard / wind screen", "Frame & structure", "yes", "Pre-fitted around the fan.", "Black mesh or plastic guard around the fan.", []),
     mp("Transport wheels", "Frame & structure", "yes", "Pre-fitted to the front stabiliser.", "Small black wheels at the front base.", []),
     mp("Stabiliser feet", "Frame & structure", "partial", "Usually fitted to the stabilisers. Spare levellers may be in the hardware bag.", "Black rubber feet or levelling caps.", [])
@@ -1669,15 +1711,13 @@ const MISSING = {
     mp("Seat & rollers", "Moving parts", "partial", "The seat is often pre-fitted to the rail. If not, it's in the main box with the rollers already attached.", "Black moulded seat with four rollers underneath.", ["Photo of the rail showing whether the seat is on it"]),
     mp("Performance monitor & arm", "Electronics", "partial", "The arm may be pre-fitted. The monitor is packed in its own small box.", "Black LCD monitor on an adjustable arm.", []),
     mp("Footplates & straps", "Frame & structure", "yes", "Pre-fitted to the front frame.", "Black footplates with hook-and-loop straps.", []),
-    mp("Handle", "Moving parts", "yes", "Clipped to the fan housing, attached to the pull strap.", "Black bent handle with rubber grips.", []),
-    mp("Batteries", "Electronics", "not", "Check the manual. Batteries are not always included.", "", [])
+    mp("Handle", "Moving parts", "yes", "Clipped to the fan housing, attached to the pull strap.", "Black bent handle with rubber grips.", [])
   ],
   ski: [
     mp("Assembly hardware", "Hardware packs", "no", "Hardware bag in the main box.", "Clear bag with bolts and a hex key.", ["Photo of the hardware bag"]),
     mp("Base / floor stand", "Frame & structure", "no", "Packed in the main box, or a second box if bought with the stand [BOX REF].", "Black steel frame with a standing platform.", []),
     mp("Handles & cords", "Moving parts", "yes", "Pre-fitted and clipped to the tower.", "Two black handles on independent cords.", []),
-    mp("Performance monitor", "Electronics", "no", "Small box inside the main carton.", "Black LCD monitor.", []),
-    mp("Batteries", "Electronics", "not", "Check the manual. Batteries are not always included.", "", [])
+    mp("Performance monitor", "Electronics", "no", "Small box inside the main carton.", "Black LCD monitor.", [])
   ],
   rack: [
     mp("Assembly hardware", "Hardware packs", "no", "Labelled hardware bags packed with the base [BOX REF].", "Clear bags with bolts, washers and nyloc nuts.", ["Photo of every hardware bag with labels readable"]),
@@ -1687,8 +1727,7 @@ const MISSING = {
     mp("Safeties / spotter arms", "Attachments & accessories", "no", "Attachments box, or a long box if they're strap or pipe safeties [BOX REF].", "Black steel arms or pipes.", []),
     mp("Chin-up bar", "Attachments & accessories", "no", "Included as standard on the MyRack base. Check the frame box.", "Straight black steel bar with knurled grips.", []),
     mp("Folding pop-pins (Folding MyRack)", "Moving parts", "yes", "Pre-installed on the hinge brackets.", "Pull-knob with a spring-loaded pin.", []),
-    mp("J-hook liners", "Attachments & accessories", "yes", "Pre-fitted to the J-hooks.", "White or black plastic liner inside the hook.", []),
-    mp("Floor anchor bolts", "Hardware packs", "not", "Not supplied. Floor fixings depend on the floor type and are sourced locally.", "", [])
+    mp("J-hook liners", "Attachments & accessories", "yes", "Pre-fitted to the J-hooks.", "White or black plastic liner inside the hook.", [])
   ],
   bench: [
     mp("Assembly hardware", "Hardware packs", "no", "Hardware bag inside the bench box.", "Clear bag with bolts and a hex key.", ["Photo of the hardware bag"]),
@@ -1701,13 +1740,11 @@ const MISSING = {
   ],
   barbell: [
     mp("Barbell", "Frame & structure", "no", "Long tube or box.", "Steel bar with knurled grip and rotating sleeves.", ["Photo of the packaging and label"]),
-    mp("End caps & snap rings", "Moving parts", "yes", "Pre-fitted to both sleeve ends.", "Branded end cap on each sleeve.", []),
-    mp("Collars", "Attachments & accessories", "not", "Not included unless the listing says otherwise.", "", [])
+    mp("End caps & snap rings", "Moving parts", "yes", "Pre-fitted to both sleeve ends.", "Branded end cap on each sleeve.", [])
   ],
   plates: [
     mp("Plates / dumbbells (per set)", "Weight stack", "no", "Sets can ship across several boxes. Check each box label for its weight and quantity [BOX REF].", "Rubber-coated plates or hex dumbbells with the weight printed on them.", ["Photo of all items received, with weight markings visible", "Photo of every box label"]),
-    mp("Plate insert hubs", "Moving parts", "yes", "Pre-fitted inside each plate.", "Steel ring in the centre of the plate.", []),
-    mp("Storage rack", "Attachments & accessories", "not", "Not included unless bought as a bundle.", "", [])
+    mp("Plate insert hubs", "Moving parts", "yes", "Pre-fitted inside each plate.", "Steel ring in the centre of the plate.", [])
   ]
 };
 const DEFAULT_PROOF = [
@@ -1758,6 +1795,24 @@ const ACCESSORIES = [
   acc("MyRack Monkey Bar", "F-MR-CHIN01", "F-MR-CHIN01.pdf", MYRACK),
   acc("Bumper Plate & Barbell Storage Tree", "F-BPBST-V2", "F-BPBST-V2+Updated.pdf", ["pro-grade-coloured-bumper-plates", "rubber-coated-weight-plates", "pro-series-barbell-olympic", "gunner-barbell-all-rounder", "olympic-barbell"])
 ];
+
+/* =====================================================================
+   SERIAL NUMBER LOCATIONS — default per equipment type, editable per SKU
+   in Admin → Products. Confirm against your own build standards.
+   ===================================================================== */
+const SERIAL_DEFAULT = {
+  cable: "Silver or white barcode label on the main upright, roughly knee height on the inside face. Some builds also carry a label on the rear of the weight-stack shroud. Format is usually the SKU plus a batch and unit number.",
+  selector: "Barcode label on the rear of the frame near the base, behind the weight stack.",
+  legpress: "Barcode label on the inside of the main frame rail, near the foot end.",
+  airbike: "Label on the rear of the frame near the stabiliser, below the fan housing. A second label sits on the carton.",
+  rower: "Label on the underside of the front frame, near the fan housing.",
+  ski: "Label on the rear of the tower, near the base plate.",
+  rack: "Label on the inside of the front-left upright, roughly 1 m from the floor.",
+  bench: "Label under the seat pad frame or on the underside of the main tube.",
+  barbell: "Not serialised. Use the order or invoice number, plus a photo of the bar and its end cap.",
+  plates: "Not serialised. Use the order or invoice number, plus photos of the items and box labels."
+};
+const serialFor = p => ({ text: (p && p.serial) || SERIAL_DEFAULT[p && p.profile] || "Check the frame near the base for a barcode label.", ph: !(p && p.serial) });
 </script>
 <script>
 /* =====================================================================
@@ -1765,7 +1820,7 @@ const ACCESSORIES = [
    ===================================================================== */
 const clone = o => JSON.parse(JSON.stringify(o));
 const DEFAULTS = { products: clone(PRODUCTS), profiles: clone(PROFILES), missing: clone(MISSING), accessories: clone(ACCESSORIES), settings: { contact: clone(CONTACT), warranty: clone(WARRANTY), proof: clone(DEFAULT_PROOF), tips: clone(DEFAULT_TIPS), claimUrl: CLAIM_URL } };
-const S = { products: clone(PRODUCTS), profiles: clone(PROFILES), missing: clone(MISSING), missingSku: {}, accessories: clone(ACCESSORIES), settings: clone(DEFAULTS.settings), docs: [], live: false, admin: false, db: null, assets: null };
+const S = { products: clone(PRODUCTS), profiles: clone(PROFILES), missing: clone(MISSING), missingSku: {}, updates: [], accessories: clone(ACCESSORIES), settings: clone(DEFAULTS.settings), docs: [], live: false, admin: false, db: null, assets: null };
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -1886,6 +1941,7 @@ function renderHome() {
   const latest = [...S.docs].filter(visDoc).sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 4);
   $("#latestDocsWrap").hidden = !latest.length;
   $("#latestDocs").innerHTML = latest.map(docLi).join("");
+  renderUpdates();
   if (!renderHome.done) { renderHome.done = true; stagger($("#view-home")); }
 }
 function modelBtn(p, attr) {
@@ -1914,6 +1970,7 @@ document.addEventListener("click", e => {
 /* ---------- Doc viewer ---------- */
 function openDoc(id) {
   const d = S.docs.find(x => x.id === id); if (!d) return;
+  track("docs", id);
   const url = docUrl(d), m = $("#viewer");
   $("#vTitle").textContent = d.title;
   $("#vOpen").href = url;
@@ -1981,7 +2038,7 @@ function renderFFInner() {
   const stage = ffStage();
   if (stage === 0) {
     P.innerHTML = `<p class="eyebrow">Step 1 of 4</p><h2 class="title">What are you working on?</h2><p class="muted">Pick the equipment category, or search any model or SKU at the top.</p>
-      <div class="grid-cat stagger">${Object.entries(CATS).filter(([k]) => visibleProducts().some(p => p.cat === k)).map(([k, c]) => `<button class="cat" data-cat="${k}">${ic(c.icon)}<b>${esc(c.label)}</b><small>${esc(c.blurb)}</small><span class="n">${visibleProducts().filter(p => p.cat === k).length} models →</span></button>`).join("")}</div>`;
+      <div class="grid-cat stagger">${Object.entries(CATS).filter(([k]) => visibleProducts().some(p => p.cat === k)).map(([k, c]) => `<button class="cat" data-cat="${k}"><b>${esc(c.label)}</b><small>${esc(c.blurb)}</small><span class="n">${visibleProducts().filter(p => p.cat === k).length} models →</span></button>`).join("")}</div>`;
     return;
   }
   if (stage === 1) {
@@ -1998,8 +2055,8 @@ function renderFFInner() {
   const pr = prof(FF.profile || p.profile);
   if (stage === 2) {
     P.innerHTML = `${toolbar()}${ctx(p)}<p class="eyebrow">Step 3 of 4</p><h2 class="title">What's the symptom?</h2><p class="muted">Items marked <span class="badge safety">Safety</span> mean the machine comes out of service first.</p>
-      <div class="stack stagger" style="gap:var(--s2);margin-top:var(--s4)">${pr.faults.map(f => `<button class="li" data-fault="${f.id}"><span class="li-ic ${f.stop ? "safety" : ""}">${ic(f.stop ? "i-alert" : "i-wrench")}</span><span class="body"><b>${esc(f.title)}</b><small>${f.checks.length} check${f.checks.length === 1 ? "" : "s"}</small></span>${f.stop ? `<span class="badge safety">Safety</span>` : ""}${ic("i-chev", "ic chev")}</button>`).join("") || `<div class="empty-state">No fault paths yet for this equipment type.</div>`}</div>
-      <div class="actions">${p.manual ? `<a class="btn" href="${esc(p.manual)}" target="_blank" rel="noopener">${ic("i-book", "ic-sm")}Open manual</a>` : ""}<button class="btn ghost" data-open="${p.id}">Model details</button></div>`;
+      <div class="stack stagger" style="gap:var(--s2);margin-top:var(--s4)">${pr.faults.map(f => `<button class="li" data-fault="${f.id}"><span class="li-ic ${f.stop ? "safety" : ""}">${ic(f.stop ? "i-alert" : "i-wrench")}</span><span class="body"><b>${esc(f.title)}</b><small>${f.checks.length} check${f.checks.length === 1 ? "" : "s"}</small></span>${updForFault(FF.profile || p.profile, f.id).some(updFresh) ? `<span class="badge new">New fix</span>` : ""}${f.stop ? `<span class="badge safety">Safety</span>` : ""}${ic("i-chev", "ic chev")}</button>`).join("") || `<div class="empty-state">No fault paths yet for this equipment type.</div>`}</div>
+      <div class="actions">${p.manual ? `<a class="btn" href="${esc(p.manual)}" target="_blank" rel="noopener" data-manual="${p.id}">${ic("i-book", "ic-sm")}Open manual</a>` : ""}<button class="btn ghost" data-open="${p.id}">Model details</button></div>`;
     return;
   }
   const F = currentFault();
@@ -2007,6 +2064,8 @@ function renderFFInner() {
   const idx = FF.answers.length;
   const trail = FF.answers.length ? `<div class="trail"><p class="eyebrow">Checks done</p><ol>${FF.answers.map((a, i) => F.checks[i] ? `<li>${esc(F.checks[i].q)} <b>${a ? "Yes" : "No"}</b></li>` : "").join("")}</ol></div>` : "";
   const stop = F.stop ? `<div class="alert danger">${ic("i-alert")}<div><b>Safety-critical.</b> Take the equipment out of service and tag it before you start.</div></div>` : "";
+  const ups = updForFault(FF.profile, F.id);
+  const updBlock = ups.length ? `<div class="upd-note"><p class="eyebrow" style="color:var(--ok)">Latest update · ${esc(fmtDay(ups[0].date))}</p><b>${esc(ups[0].title)}</b>${ups[0].summary ? `<p class="muted" style="margin:6px 0 0">${esc(ups[0].summary)}</p>` : ""}</div>` : "";
   const docs = docsFor(p.id);
   const docBlock = docs.length ? `<div class="mini" style="margin-top:var(--s3)"><h4 class="eyebrow">Documents for this model</h4><div class="doclist">${docs.map(docLi).join("")}</div></div>` : "";
 
@@ -2014,7 +2073,7 @@ function renderFFInner() {
     const hit = FF.answers.lastIndexOf(true);
     if (hit > -1 && F.checks[hit]) {
       const fx = F.checks[hit].fix;
-      P.innerHTML = `${toolbar()}${ctx(p)}${stop}
+      P.innerHTML = `${toolbar()}${ctx(p)}${stop}${updBlock}
         <div class="result"><p class="eyebrow" style="color:var(--ok)">Likely fix</p><h3 class="title">${esc(fx.title)}</h3>
         ${fx.warn ? `<div class="alert danger" style="margin:var(--s3) 0 0">${ic("i-alert")}<div>${esc(fx.warn)}</div></div>` : ""}
         <ol class="steps">${(fx.steps || []).map(s => `<li><span>${esc(s)}</span></li>`).join("")}</ol></div>
@@ -2024,7 +2083,7 @@ function renderFFInner() {
         </div>${docBlock}
         <div class="actions">
           <button class="btn primary" id="printJob">${ic("i-print", "ic-sm")}Print job sheet</button>
-          ${p.manual ? `<a class="btn" href="${esc(p.manual)}" target="_blank" rel="noopener">${ic("i-book", "ic-sm")}Manual</a>` : ""}
+          ${p.manual ? `<a class="btn" href="${esc(p.manual)}" target="_blank" rel="noopener" data-manual="${p.id}">${ic("i-book", "ic-sm")}Manual</a>` : ""}
           ${hit < F.checks.length - 1 ? `<button class="btn" data-ffagain>Not fixed? Keep checking</button>` : ""}
           <button class="btn ghost" data-ffback="2">New fault, same model</button>
         </div>${trail}`;
@@ -2036,7 +2095,7 @@ function renderFFInner() {
     return;
   }
   const c = F.checks[idx];
-  P.innerHTML = `${toolbar()}${ctx(p)}${stop}
+  P.innerHTML = `${toolbar()}${ctx(p)}${stop}${idx === 0 ? updBlock : ""}
     <div class="row"><p class="eyebrow">Check ${idx + 1} of ${F.checks.length}</p><span class="spacer"></span><span class="small muted">${Math.round((idx / F.checks.length) * 100)}%</span></div>
     ${progHtml("ff", (idx / F.checks.length) * 100, `style="margin-top:var(--s2)" role="progressbar" aria-valuemin="0" aria-valuemax="${F.checks.length}" aria-valuenow="${idx}"`)}
     <p class="q">${esc(c.q)}</p>
@@ -2062,7 +2121,7 @@ function escalation(p) {
   return `<div class="result esc"><p class="eyebrow">Escalate to Force USA</p><h3 class="title">Not resolved by standard checks</h3>
     <p class="muted" style="margin:var(--s2) 0 0">Gather these before contacting Force USA technical support so the case can be actioned first time.</p>
     <ol class="steps">
-      <li><span>Serial number and SKU (<b>${esc(p.sku)}</b>)</span></li>
+      <li><span>Serial number and SKU (<b>${esc(p.sku)}</b>)<br><span class="muted small">${esc(serialFor(p).text)}</span></span></li>
       <li><span>Proof of purchase date and customer site</span></li>
       <li><span>Clear photos, plus a short video showing the fault in motion</span></li>
       <li><span>The checks completed (print the job sheet below)</span></li>
@@ -2081,11 +2140,11 @@ document.addEventListener("click", e => {
     if (!FF.pickModelFor) { FF.profile = p.profile; FF.fault = null; }
     FF.pickModelFor = false; FF.answers = []; FF.done = false; renderFF(); return;
   }
-  const f = t.closest("[data-fault]"); if (f) { FF.fault = f.dataset.fault; FF.answers = []; FF.done = false; renderFF(); return; }
+  const f = t.closest("[data-fault]"); if (f) { FF.fault = f.dataset.fault; FF.answers = []; FF.done = false; track("faults", `${FF.profile}|${FF.fault}`); renderFF(); return; }
   const a = t.closest("[data-ans]");
   if (a) {
     const F = currentFault(); FF.answers.push(a.dataset.ans === "1");
-    if (a.dataset.ans === "1" || FF.answers.length >= F.checks.length) FF.done = true;
+    if (a.dataset.ans === "1" || FF.answers.length >= F.checks.length) { FF.done = true; track(a.dataset.ans === "1" ? "resolved" : "escalated", `${FF.profile}|${FF.fault}`); }
     renderFF(); return;
   }
   if (t.closest("[data-undo]")) { FF.answers.pop(); FF.done = false; renderFF(); return; }
@@ -2131,7 +2190,7 @@ function drawLib() {
 let lastFocus = null;
 function openDrawer(id) {
   const p = byId(id); if (!p) return;
-  addRecent(id);
+  addRecent(id); track("products", id);
   const P = prof(p.profile), w = S.settings.warranty[P.warranty] || { rows: [], note: "" };
   const docs = docsFor(p.id), diagrams = docs.filter(d => d.kind === "Exploded diagram"), others = docs.filter(d => d.kind !== "Exploded diagram");
   const wPh = w.rows.some(r => isPh(r[0])) || w.ph;
@@ -2147,7 +2206,7 @@ function openDrawer(id) {
       <div class="card dsec">
         <h3 class="eyebrow">Documents</h3>
         <div class="stack" style="gap:var(--s2)">
-          ${p.manual ? `<a class="li" href="${esc(p.manual)}" target="_blank" rel="noopener"><span class="li-ic">${ic("i-book")}</span><span class="body"><b>Owner's manual</b><small>PDF · forceusa.com</small></span>${ic("i-ext", "ic chev")}</a>` : ""}
+          ${p.manual ? `<a class="li" href="${esc(p.manual)}" target="_blank" rel="noopener" data-manual="${p.id}"><span class="li-ic">${ic("i-book")}</span><span class="body"><b>Owner's manual</b><small>PDF · forceusa.com</small></span>${ic("i-ext", "ic chev")}</a>` : ""}
           ${diagrams.map(docLi).join("") || `<div class="alert info" style="margin:0">${ic("i-info")}<div>No exploded diagram uploaded yet.${S.admin && S.unlocked ? ` <button class="btn sm" data-upload-for="${p.id}" style="margin-left:6px">${ic("i-upload", "ic-sm")}Upload</button>` : ""}</div></div>`}
           ${others.map(docLi).join("")}
         </div>
@@ -2156,6 +2215,10 @@ function openDrawer(id) {
         <h3 class="eyebrow">Warranty cover ${wPh ? PH : ""}</h3>
         <div class="wlist">${w.rows.map(([b, s]) => `<div><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("")}</div>
         <p class="muted small" style="margin:var(--s3) 0 0">${esc(w.note)} Confirm regional and commercial-use terms before quoting.</p>
+      </div>
+      <div class="card dsec">
+        <h3 class="eyebrow">Serial number</h3>
+        <div class="serial">${ic("i-search")}<div><b>Where to find it${serialFor(p).ph ? PH : ""}</b><span class="muted">${esc(serialFor(p).text)}</span></div></div>
       </div>
       <div class="card dsec">
         <h3 class="eyebrow">Accessories</h3>
@@ -2313,7 +2376,7 @@ function renderMP() {
       <label class="sr" for="mpFind">Find a product by name or SKU</label>
       <div class="bigsearch">${ic("i-search")}<input class="input" id="mpFind" type="search" placeholder="Type a model or SKU, e.g. G20 or F-MR-BASE" autocomplete="off"></div>
       <div class="grid-model stagger" id="mpFindRes"></div>
-      <div class="grid-cat stagger" id="mpCats">${Object.entries(CATS).filter(([k]) => visibleProducts().some(p => p.cat === k)).map(([k, c]) => `<button class="cat" data-mpcat="${k}">${ic(c.icon)}<b>${esc(c.label)}</b><small>${esc(c.blurb)}</small><span class="n">${visibleProducts().filter(p => p.cat === k).length} models →</span></button>`).join("")}</div>`;
+      <div class="grid-cat stagger" id="mpCats">${Object.entries(CATS).filter(([k]) => visibleProducts().some(p => p.cat === k)).map(([k, c]) => `<button class="cat" data-mpcat="${k}"><b>${esc(c.label)}</b><small>${esc(c.blurb)}</small><span class="n">${visibleProducts().filter(p => p.cat === k).length} models →</span></button>`).join("")}</div>`;
   } else if (stage === 1) {
     const list = visibleProducts().filter(p => p.cat === MPS.cat && (!MPS.wantProfile || p.profile === MPS.wantProfile)), fams = [...new Set(list.map(p => p.family))];
     html += `<p class="eyebrow">Step 1</p><h2 class="title">Which model?</h2>${MPS.wantProfile ? `<p class="muted">Showing models that include this part.</p>` : ""}
@@ -2322,7 +2385,7 @@ function renderMP() {
     const p = byId(MPS.model), items = mpForModel(p), q = MPS.q.toLowerCase();
     const shown = items.filter(it => !q || (it.name + " " + it.group + " " + it.looks).toLowerCase().includes(q));
     const groups = MP_GROUPS.filter(g => shown.some(i => i.group === g)).concat([...new Set(shown.map(i => i.group))].filter(g => !MP_GROUPS.includes(g)));
-    html += `${ctx(p)}<div class="row"><div><p class="eyebrow">Step 2</p><h2 class="title">What's missing?</h2></div><span class="spacer"></span>${p.manual ? `<a class="btn sm" href="${esc(p.manual)}" target="_blank" rel="noopener">${ic("i-book", "ic-sm")}Parts list in manual</a>` : ""}</div>
+    html += `${ctx(p)}<div class="row"><div><p class="eyebrow">Step 2</p><h2 class="title">What's missing?</h2></div><span class="spacer"></span>${p.manual ? `<a class="btn sm" href="${esc(p.manual)}" target="_blank" rel="noopener" data-manual="${p.id}">${ic("i-book", "ic-sm")}Parts list in manual</a>` : ""}</div>
       <p class="muted">Pick the part the customer describes. The <span class="badge info">${ic("i-check", "ic-sm")}Pre-installed</span> tag means it's already on the machine.</p>
       <div class="row" style="margin:var(--s3) 0"><label class="sr" for="mpQ">Filter parts</label><input class="input" id="mpQ" type="search" placeholder="Filter parts, e.g. pin, cable, pad" value="${esc(MPS.q)}" style="max-width:360px"></div>
       <div id="mpParts">${mpPartsHtml(p, shown, groups)}</div>`;
@@ -2365,6 +2428,7 @@ function mpDetail() {
         <div><p class="eyebrow">Step 3 · ${esc(it.group)}</p><h2 class="title">${esc(it.name)}</h2></div>
         <div class="row">${preBadge(it.pre, true)}${it.partNo ? `<span class="badge"><span class="sku">${esc(it.partNo)}</span></span>` : ""}</div>
         ${it.looks ? `<div><p class="eyebrow">What it looks like</p><p style="margin:4px 0 0">${esc(it.looks)}</p></div>` : ""}
+        <div class="serial">${ic("i-search")}<div><b>Serial number location${serialFor(p).ph ? PH : ""}</b><span class="muted">${esc(serialFor(p).text)}</span></div></div>
         <div class="say ${it.pre === "yes" ? "is-pre" : ""}"><p class="eyebrow">${ic("i-phone", "ic-sm")} Say to the customer</p><p style="margin:6px 0 0"><b>${esc(x.say)}</b></p><p style="margin:6px 0 0">${esc(it.where)}</p></div>
       </div>
     </div>
@@ -2383,7 +2447,7 @@ function mpDetail() {
     <section class="mini claim-cta" style="margin-top:var(--s3)">
       <div class="claim-state ${pDone === proof.length ? "ready" : ""}" id="claimState" style="margin-top:0">${claimStateHtml(pDone, proof.length, tDone, tips.length)}</div>
       <div class="actions" style="margin-top:var(--s3)">
-        <a class="btn primary" href="${esc(claimUrl())}" target="_blank" rel="noopener">${ic("i-file", "ic-sm")}Register warranty claim${ic("i-ext", "ic-sm")}</a>
+        <a class="btn primary" href="${esc(claimUrl())}" target="_blank" rel="noopener" data-claim="${esc(p.id)}">${ic("i-file", "ic-sm")}Register warranty claim${ic("i-ext", "ic-sm")}</a>
         <button class="btn ghost" data-mpback="2">Different part</button>
       </div>
       <p class="small muted" style="margin:var(--s2) 0 0">Opens the Force USA warranty claim form in a new tab. Include the model, SKU, part name and the proof listed above.</p>
@@ -2436,7 +2500,7 @@ document.addEventListener("click", e => {
     Object.assign(MPS, { cat: p.cat, model: p.id, part: want ? want.id : null, q: "", wantPart: null, wantProfile: null, ticks: {}, checks: {} }); addRecent(p.id); renderMP(); return; }
   const pt = t.closest("[data-mppart]");
   if (pt) {
-    MPS.ticks = {}; MPS.checks = {};
+    MPS.ticks = {}; MPS.checks = {}; track("missing", `${MPS.model}|${pt.dataset.mppart}`);
     const th = $(".pthumb", pt);
     if (document.startViewTransition && !REDUCED && th) {
       th.style.viewTransitionName = "part-img";
@@ -2448,6 +2512,8 @@ document.addEventListener("click", e => {
   }
   const up = t.closest("[data-mpupload]"); if (up) { AD.section = "missing"; AD.mpProd = MPS.model; AD.openPart = up.dataset.mpupload; AD.draft = null; go("admin"); }
 });
+document.addEventListener("click", e => { const m = e.target.closest("[data-manual]"); if (m) track("manuals", m.dataset.manual); });
+document.addEventListener("click", e => { const c = e.target.closest("[data-claim]"); if (c) track("claims", c.dataset.claim); });
 document.addEventListener("change", e => {
   const t = e.target;
   if (t.matches("[data-mptick]")) { MPS.ticks[t.dataset.mptick] = t.checked; updateClaimProgress(); }
@@ -2458,56 +2524,6 @@ document.addEventListener("change", e => {
 /* =====================================================================
    ADMIN — Missing parts editor
    ===================================================================== */
-function adMissing() {
-  const M = $("#amain");
-  AD.key = AD.key && S.profiles[AD.key] ? AD.key : "cable";
-  if (!AD.draft) AD.draft = { items: clone(mpItems(AD.key)) };
-  const D = AD.draft, models = S.products.filter(p => p.profile === AD.key);
-  M.innerHTML = `
-    <p class="eyebrow">Missing parts</p>
-    <h2 class="title">What's in the box</h2>
-    <p class="muted">For each equipment type, list the parts, whether they're pre-installed, where to look, and any extra proof. Add a photo so phone agents can describe it.</p>
-    <div class="form-grid" style="margin-top:var(--s4)">
-      <label class="field"><span>Equipment type</span><select class="select" id="mpProf">${Object.entries(S.profiles).map(([k, p]) => `<option value="${k}" ${k === AD.key ? "selected" : ""}>${esc(p.label)}</option>`).join("")}</select><small>Applies to ${models.length} model${models.length === 1 ? "" : "s"}</small></label>
-      <div class="field"><span>&nbsp;</span><button class="btn" id="mpAdd">${ic("i-plus", "ic-sm")}Add part</button></div>
-    </div>
-    <div class="stack" style="gap:var(--s2);margin-top:var(--s4)">
-      ${D.items.map((it, i) => `<details class="chk" ${AD.openPart === it.id ? "open" : ""} data-mpid="${esc(it.id)}">
-        <summary><span class="pthumb sm">${it.image ? `<img src="/_blob/${esc(it.image)}" alt="">` : ic("i-box", "ic-sm")}</span><span class="qt" id="mpn${i}">${esc(it.name)}</span>${preBadge(it.pre)}${ic("i-chev", "ic caret")}</summary>
-        <div class="inner">
-          <div class="form-grid">
-            <label class="field"><span>Part name</span><input class="input" data-f="items.${i}.name" data-live="mpn${i}" value="${esc(it.name)}"></label>
-            <label class="field"><span>Part number <small>(optional)</small></span><input class="input mono" data-f="items.${i}.partNo" value="${esc(it.partNo || "")}"></label>
-            <label class="field"><span>Group</span><select class="select" data-f="items.${i}.group">${MP_GROUPS.map(g => `<option ${it.group === g ? "selected" : ""}>${g}</option>`).join("")}</select></label>
-            <label class="field"><span>How it ships</span><select class="select" data-f="items.${i}.pre">${Object.entries(PRE).map(([k, v]) => `<option value="${k}" ${it.pre === k ? "selected" : ""}>${v.label}</option>`).join("")}</select></label>
-            <label class="field full"><span>Where to look / where it's fitted</span><textarea class="textarea" rows="2" data-f="items.${i}.where">${esc(it.where)}</textarea></label>
-            <label class="field full"><span>What it looks like</span><textarea class="textarea" rows="2" data-f="items.${i}.looks">${esc(it.looks)}</textarea></label>
-            <label class="field full"><span>Extra proof for this part <small>one per line, added to the standard list</small></span><textarea class="textarea" rows="2" data-t="lines" data-f="items.${i}.proof">${esc((it.proof || []).join("\n"))}</textarea></label>
-          </div>
-          <div class="field"><span class="lbl">Photo</span>
-            <div class="row">
-              <span class="pthumb lg">${it.image ? `<img src="/_blob/${esc(it.image)}" alt="${esc(it.name)}">` : ic("i-box")}</span>
-              <label class="btn sm" for="mpimg${i}">${ic("i-upload", "ic-sm")}${it.image ? "Replace photo" : "Upload photo"}</label>
-              <input type="file" id="mpimg${i}" class="sr" accept="image/png,image/jpeg,image/webp,image/gif" data-mpimg="${i}">
-              ${it.image ? `<button class="btn sm ghost" data-mpimgdel="${i}">Remove photo</button>` : ""}
-            </div>
-          </div>
-          ${models.length > 1 ? `<div class="field"><span class="lbl">Only for these models <small>(leave all unticked for every model)</small></span>
-            <div class="parts-pick">${models.map(m => `<label class="check"><input type="checkbox" data-mpmod="${i}|${m.id}" ${(it.models || []).includes(m.id) ? "checked" : ""}>${esc(m.name)}</label>`).join("")}</div></div>` : ""}
-          <div class="row">
-            <button class="btn sm" data-mpmv="${i}|-1" ${i === 0 ? "disabled" : ""}>${ic("i-up", "ic-sm")}Up</button>
-            <button class="btn sm" data-mpmv="${i}|1" ${i === D.items.length - 1 ? "disabled" : ""}>${ic("i-down", "ic-sm")}Down</button>
-            <span class="spacer"></span>
-            <button class="btn sm danger" data-mpdel="${i}">${ic("i-trash", "ic-sm")}Delete part</button>
-          </div>
-        </div></details>`).join("") || `<div class="empty-state">${ic("i-box")}<b>No parts listed</b><span>Use “Add part” to start.</span></div>`}
-    </div>
-    ${savebar(S.live ? `<button class="btn ghost" data-mpreset>Reset type to defaults</button>` : "")}`;
-  stagger(M);
-  $("#mpProf").onchange = async e => { if (!(await leaveOK())) { e.target.value = AD.key; return; } AD.key = e.target.value; AD.draft = null; AD.openPart = null; adMissing(); };
-  $("#mpAdd").onclick = () => { const it = mp("New part " + (D.items.length + 1), "Hardware packs", "no", "", ""); it.id += "-" + Date.now().toString(36); D.items.unshift(it); AD.openPart = it.id; markDirty(); adMissing(); const n = $('[data-f="items.0.name"]'); n.focus(); n.select(); };
-  if (AD.openPart) { const d = $(`details[data-mpid="${CSS.escape(AD.openPart)}"]`); if (d) setTimeout(() => d.scrollIntoView({ block: "center", behavior: "smooth" }), 80); }
-}
 document.addEventListener("toggle", e => { const d = e.target; if (d.matches && d.matches("details[data-mpid]") && d.open) AD.openPart = d.dataset.mpid; }, true);
 document.addEventListener("change", async e => {
   if (AD.section !== "missing" || !AD.draft) return;
@@ -2624,6 +2640,7 @@ function applyAccount(a, isAdmin) {
   buildIndex();
 }
 function signOut(msg) {
+  flushMetrics(); MET.key = null; MET.doc = null; INS.rows = null;
   AUTH = null; setSession(null); try { setUnlocked(false); } catch (e) {}
   document.body.classList.remove("has-cobrand");
   document.body.classList.remove("authed");
@@ -2878,8 +2895,9 @@ function adMissingSku() {
     <div class="form-grid" style="margin-top:var(--s4)">
       <label class="field"><span>Product (SKU)</span><select class="select" id="mpProd">${Object.entries(CATS).map(([k, c]) => `<optgroup label="${esc(c.label)}">${S.products.filter(x => x.cat === k).map(x => `<option value="${x.id}" ${x.id === p.id ? "selected" : ""}>${esc(x.sku)} · ${esc(x.name)}${S.missingSku[x.id] ? " ✓" : ""}</option>`).join("")}</optgroup>`).join("")}</select>
         <small>${custom ? "✓ This SKU has its own parts list." : `Showing the starter list for ${esc(prof(p.profile).label)}. Saving creates this SKU's own list.`}</small></label>
-      <div class="field"><span>&nbsp;</span><div class="row"><button class="btn" id="mpAdd">${ic("i-plus", "ic-sm")}Add part</button>${S.products.length > 1 ? `<button class="btn ghost" id="mpCopy">Copy list from…</button>` : ""}</div></div>
+      <div class="field"><span>&nbsp;</span><div class="row"><button class="btn" id="mpAdd">${ic("i-plus", "ic-sm")}Add part</button><button class="btn" id="mpImport">${ic("i-upload", "ic-sm")}Import list</button>${S.products.length > 1 ? `<button class="btn ghost" id="mpCopy">Copy from…</button>` : ""}</div></div>
     </div>
+    ${AD.import ? importPanel() : ""}
     <div class="stack" style="gap:var(--s2);margin-top:var(--s4)">
       ${D.items.map((it, i) => `<details class="chk" ${AD.openPart === it.id ? "open" : ""} data-mpid="${esc(it.id)}">
         <summary><span class="pthumb sm">${it.image ? `<img src="/_blob/${esc(it.image)}" alt="">` : ic("i-box", "ic-sm")}</span><span class="qt" id="mpn${i}">${esc(it.name)}</span>${preBadge(it.pre)}${ic("i-chev", "ic caret")}</summary>
@@ -2888,7 +2906,7 @@ function adMissingSku() {
             <label class="field"><span>Part name</span><input class="input" data-f="items.${i}.name" data-live="mpn${i}" value="${esc(it.name)}"></label>
             <label class="field"><span>Part number <small>(optional)</small></span><input class="input mono" data-f="items.${i}.partNo" value="${esc(it.partNo || "")}"></label>
             <label class="field"><span>Group</span><select class="select" data-f="items.${i}.group">${MP_GROUPS.map(g => `<option ${it.group === g ? "selected" : ""}>${g}</option>`).join("")}</select></label>
-            <label class="field"><span>How it ships</span><select class="select" data-f="items.${i}.pre">${Object.entries(PRE).map(([k, v]) => `<option value="${k}" ${it.pre === k ? "selected" : ""}>${v.label}</option>`).join("")}</select></label>
+            <label class="field"><span>How it ships</span><select class="select" data-f="items.${i}.pre">${Object.entries(PRE).filter(([k]) => k !== "not" || it.pre === "not").map(([k, v]) => `<option value="${k}" ${it.pre === k ? "selected" : ""}>${v.label}</option>`).join("")}</select></label>
             <label class="field full"><span>Where to look / where it's fitted</span><textarea class="textarea" rows="2" data-f="items.${i}.where">${esc(it.where)}</textarea></label>
             <label class="field full"><span>What it looks like</span><textarea class="textarea" rows="2" data-f="items.${i}.looks">${esc(it.looks)}</textarea></label>
             <label class="field full"><span>Extra proof for this part <small>one per line, added to the standard list</small></span><textarea class="textarea" rows="2" data-t="lines" data-f="items.${i}.proof">${esc((it.proof || []).join("\n"))}</textarea></label>
@@ -2911,7 +2929,9 @@ function adMissingSku() {
     </div>
     ${savebar(custom && S.live ? `<button class="btn ghost" data-mpreset>Revert to starter list</button>` : "")}`;
   stagger(M);
-  $("#mpProd").onchange = async e => { if (!(await leaveOK())) { e.target.value = AD.mpProd; return; } AD.mpProd = e.target.value; AD.draft = null; AD.openPart = null; adMissingSku(); };
+  $("#mpImport").onclick = () => { AD.import = !AD.import; adMissingSku(); };
+  bindImport();
+  $("#mpProd").onchange = async e => { if (!(await leaveOK())) { e.target.value = AD.mpProd; return; } AD.mpProd = e.target.value; AD.import = false; AD.impRows = null; AD.impText = ""; AD.draft = null; AD.openPart = null; adMissingSku(); };
   $("#mpAdd").onclick = () => { const it = mp("New part " + (D.items.length + 1), "Hardware packs", "no", "", ""); it.id += "-" + Date.now().toString(36); D.items.unshift(it); AD.openPart = it.id; markDirty(); adMissingSku(); const n = $('[data-f="items.0.name"]'); n.focus(); n.select(); };
   const cp = $("#mpCopy");
   if (cp) cp.onclick = async () => {
@@ -2925,6 +2945,347 @@ function adMissingSku() {
   };
   if (AD.openPart) { const d = $(`details[data-mpid="${CSS.escape(AD.openPart)}"]`); if (d) setTimeout(() => d.scrollIntoView({ block: "center", behavior: "smooth" }), 80); }
 }
+
+
+/* =====================================================================
+   UPDATES (new fixes & troubleshooting) — admin managed, stored in db
+   ===================================================================== */
+const updList = () => (S.updates || []).slice().sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")) || String(b.id).localeCompare(String(a.id)));
+const updVisible = u => !(u.products || []).length || u.products.some(canSee);
+const updFresh = u => { const d = Date.parse(u.date || ""); return isFinite(d) && Date.now() - d < 120 * 864e5; };
+const updForFault = (profile, faultId) => updList().filter(u => u.profile === profile && u.faultId === faultId && updVisible(u));
+const fmtDay = s => { const d = new Date(s); return isFinite(d) ? d.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" }) : ""; };
+function updCard(u) {
+  const names = (u.products || []).map(byIdAll).filter(Boolean);
+  const F = u.profile && S.profiles[u.profile] ? S.profiles[u.profile].faults.find(f => f.id === u.faultId) : null;
+  return `<article class="upd">
+    <div class="row"><span class="when">${esc(fmtDay(u.date))}</span>${updFresh(u) ? `<span class="badge new">New</span>` : ""}${u.pinned ? `<span class="badge info">Pinned</span>` : ""}</div>
+    <h3>${esc(u.title)}</h3>
+    ${u.summary ? `<p>${esc(u.summary)}</p>` : ""}
+    <div class="tags">${names.length ? names.slice(0, 4).map(p => `<span class="badge">${esc(p.name)}</span>`).join("") + (names.length > 4 ? `<span class="badge">+${names.length - 4} more</span>` : "") : `<span class="badge">All products</span>`}</div>
+    ${F ? `<div><button class="btn sm primary" data-jump="${esc(u.profile)}|${esc(u.faultId)}">Open the fix</button></div>` : ""}
+  </article>`;
+}
+function renderUpdates() {
+  const wrap = $("#updatesWrap"); if (!wrap) return;
+  const list = updList().filter(updVisible).sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)).slice(0, 6);
+  wrap.hidden = !list.length;
+  $("#updatesGrid").innerHTML = list.map(updCard).join("");
+}
+
+/* =====================================================================
+   USAGE METRICS — counts only, written to metrics/<date>__<account>
+   ===================================================================== */
+const MET = { key: null, doc: null, pending: {}, timer: null, loaded: false };
+const metKey = () => `${new Date().toISOString().slice(0, 10)}__${(AUTH && AUTH.username || "unknown").replace(/[^a-z0-9._-]/gi, "-").slice(0, 40)}`;
+function track(group, key) {
+  if (!AUTH || !key) return;
+  const g = MET.pending[group] || (MET.pending[group] = {});
+  g[key] = (g[key] || 0) + 1;
+  if (!MET.timer) MET.timer = setTimeout(flushMetrics, 12000);
+}
+async function flushMetrics() {
+  MET.timer = null;
+  if (!S.db || !AUTH || !Object.keys(MET.pending).length) return;
+  const key = metKey(), path = "metrics/" + key;
+  try {
+    if (MET.key !== key || !MET.doc) {
+      MET.key = key;
+      try { const snap = await S.db.doc(path).get(); MET.doc = snap.exists ? snap.data() : { date: key.slice(0, 10), account: AUTH.username, name: AUTH.name }; }
+      catch (e) { MET.doc = { date: key.slice(0, 10), account: AUTH.username, name: AUTH.name }; }
+    }
+    const d = MET.doc, p = MET.pending; MET.pending = {};
+    Object.entries(p).forEach(([g, counts]) => { d[g] = d[g] || {}; Object.entries(counts).forEach(([k, n]) => d[g][k] = (d[g][k] || 0) + n); });
+    d.updatedAt = new Date().toISOString();
+    await S.db.doc(path).set(d);
+  } catch (e) { /* metrics are best effort */ }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushMetrics(); });
+window.addEventListener("pagehide", () => { flushMetrics(); });
+
+/* ---------- Admin: Insights ---------- */
+const INS = { days: 30, rows: null, loading: false };
+function insLabel(group, key) {
+  if (group === "products" || group === "manuals" || group === "claims") { const p = byIdAll(key); return p ? `${p.name} (${p.sku})` : key; }
+  if (group === "missing") { const [pid, part] = key.split("|"); const p = byIdAll(pid); const it = p ? mpForModel(p).find(i => i.id === part) : null; return `${it ? it.name : part} — ${p ? p.name : pid}`; }
+  if (group === "faults" || group === "resolved") { const [pr, fid] = key.split("|"); const F = S.profiles[pr] && S.profiles[pr].faults.find(f => f.id === fid); return `${F ? F.title : fid} — ${S.profiles[pr] ? S.profiles[pr].label : pr}`; }
+  if (group === "docs") { const d = S.docs.find(x => x.id === key); return d ? d.title : key; }
+  return key;
+}
+function insTop(group, n = 8) {
+  const totals = {};
+  (INS.rows || []).forEach(r => Object.entries(r[group] || {}).forEach(([k, v]) => totals[k] = (totals[k] || 0) + v));
+  const arr = Object.entries(totals).sort((a, b) => b[1] - a[1]).slice(0, n);
+  const max = arr.length ? arr[0][1] : 1;
+  return { arr, max, total: Object.values(totals).reduce((a, b) => a + b, 0) };
+}
+function insBars(group, title, empty) {
+  const { arr, max } = insTop(group);
+  return `<section class="mini"><h3 class="eyebrow">${esc(title)}</h3>
+    ${arr.length ? `<div class="bars">${arr.map(([k, v]) => `<div class="bar"><span class="lbl" title="${esc(insLabel(group, k))}">${esc(insLabel(group, k))}</span><span class="n">${v}</span><span class="track"><i style="width:${Math.round((v / max) * 100)}%"></i></span></div>`).join("")}</div>`
+      : `<p class="muted small" style="margin:var(--s2) 0 0">${esc(empty)}</p>`}</section>`;
+}
+async function loadInsights() {
+  if (!S.db) { INS.rows = []; return; }
+  INS.loading = true;
+  try {
+    const snap = await S.db.collection("metrics").get ? null : null;
+  } catch (e) {}
+  try {
+    const rows = [];
+    await new Promise(res => {
+      const un = S.db.collection("metrics").onSnapshot(qs => { qs.docs.forEach(d => rows.push({ id: d.id, ...d.data() })); res(); }, () => res());
+      setTimeout(res, 6000);
+    });
+    INS.rows = rows;
+  } catch (e) { INS.rows = []; }
+  INS.loading = false;
+}
+function adInsights() {
+  const M = $("#amain");
+  if (INS.rows === null) {
+    M.innerHTML = `<p class="eyebrow">Insights</p><h2 class="title">Usage metrics</h2><div class="empty-state"><span class="spin" aria-hidden="true"></span>Loading usage data…</div>`;
+    loadInsights().then(() => { if (AD.section === "insights") adInsights(); });
+    return;
+  }
+  const cut = INS.days ? new Date(Date.now() - INS.days * 864e5).toISOString().slice(0, 10) : "";
+  const all = INS.rows.filter(r => !cut || String(r.date || "") >= cut);
+  INS.filtered = all;
+  const saved = INS.rows; INS.rows = all;
+  const prod = insTop("products", 999), man = insTop("manuals", 999), miss = insTop("missing", 999), claims = insTop("claims", 999), faults = insTop("faults", 999);
+  const accounts = new Set(all.map(r => r.account));
+  M.innerHTML = `
+    <p class="eyebrow">Insights</p>
+    <div class="row"><h2 class="title">Usage metrics</h2><span class="spacer"></span><button class="btn sm" id="insRefresh">${ic("i-reset", "ic-sm")}Refresh</button><button class="btn sm" id="insCsv">${ic("i-file", "ic-sm")}Copy as CSV</button></div>
+    <p class="muted">Counts of what distributors look at, so the product team can see where issues cluster. No personal data beyond the account name.</p>
+    <div class="seg" role="tablist" aria-label="Date range">${[[7, "7 days"], [30, "30 days"], [90, "90 days"], [0, "All time"]].map(([d, l]) => `<button role="tab" data-insdays="${d}" aria-selected="${INS.days === d}">${l}</button>`).join("")}</div>
+    <div class="kpis">
+      <div class="kpi"><b>${prod.total}</b><span>Product views</span></div>
+      <div class="kpi"><b>${man.total}</b><span>Manuals opened</span></div>
+      <div class="kpi"><b>${faults.total}</b><span>Fault paths started</span></div>
+      <div class="kpi"><b>${miss.total}</b><span>Missing-part lookups</span></div>
+      <div class="kpi"><b>${claims.total}</b><span>Warranty claims started</span></div>
+      <div class="kpi"><b>${accounts.size}</b><span>Active accounts</span></div>
+    </div>
+    <div class="ins-cols">
+      ${insBars("products", "Most viewed products", "No product views recorded yet.")}
+      ${insBars("missing", "Most reported missing parts", "No missing-part lookups recorded yet.")}
+      ${insBars("manuals", "Most opened manuals", "No manuals opened yet.")}
+      ${insBars("faults", "Most used fault paths", "No fault paths started yet.")}
+      ${insBars("resolved", "Fixes reached", "No fixes recorded yet.")}
+      ${insBars("docs", "Most viewed documents", "No documents viewed yet.")}
+      ${insBars("claims", "Warranty claims started (by product)", "No claims started yet.")}
+      ${insBars("searches", "Searches with no results", "No empty searches recorded.")}
+    </div>
+    <p class="small muted" style="margin-top:var(--s4)">${all.length} day/account record${all.length === 1 ? "" : "s"} in this range. Records are written by each distributor's browser, so figures can lag by a minute or two.</p>`;
+  INS.rows = saved;
+  $("#insRefresh").onclick = () => { INS.rows = null; adInsights(); };
+  $("#insCsv").onclick = async () => {
+    const groups = ["products", "manuals", "faults", "resolved", "missing", "claims", "docs", "searches"];
+    const lines = ["group,item,label,count"];
+    groups.forEach(g => { const t = {}; all.forEach(r => Object.entries(r[g] || {}).forEach(([k, v]) => t[k] = (t[k] || 0) + v)); Object.entries(t).sort((a, b) => b[1] - a[1]).forEach(([k, v]) => lines.push([g, k, `"${String(insLabel(g, k)).replace(/"/g, '""')}"`, v].join(","))); });
+    const ok = await copyCsv(lines.join("\n"));
+    toast(ok ? "Metrics copied as CSV" : "Couldn't copy. Try again.", !ok);
+  };
+}
+async function copyCsv(txt) {
+  try { await navigator.clipboard.writeText(txt); return true; } catch (e) {}
+  try { const ta = document.createElement("textarea"); ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return ok; } catch (e) { return false; }
+}
+document.addEventListener("click", e => { const d = e.target.closest("[data-insdays]"); if (d && AD.section === "insights") { INS.days = +d.dataset.insdays; adInsights(); } });
+
+/* ---------- Admin: Updates ---------- */
+function adUpdates() {
+  const M = $("#amain");
+  if (!AD.draft) AD.draft = { list: clone(S.updates || []) };
+  const L = AD.draft.list;
+  const faultsFor = pr => (S.profiles[pr] ? S.profiles[pr].faults : []);
+  M.innerHTML = `
+    <p class="eyebrow">Updates</p>
+    <div class="row"><h2 class="title">New fixes &amp; bulletins</h2><span class="spacer"></span><button class="btn primary" id="updAdd">${ic("i-plus", "ic-sm")}Add update</button></div>
+    <p class="muted">Anything added here shows on the home page and puts a “New” badge on the matching fault, so distributors can see a new resolution straight away.</p>
+    <div class="stack" style="gap:var(--s2);margin-top:var(--s4)">
+      ${L.map((u, i) => `<details class="chk" ${AD.openUpd === u.id ? "open" : ""} data-updid="${esc(u.id)}">
+        <summary><span class="num">${ic("i-info", "ic-sm")}</span><span class="qt" id="un${i}">${esc(u.title || "Untitled update")}</span><span class="badge">${esc(fmtDay(u.date) || "No date")}</span>${ic("i-chev", "ic caret")}</summary>
+        <div class="inner">
+          <div class="form-grid">
+            <label class="field full"><span>Title</span><input class="input" data-f="list.${i}.title" data-live="un${i}" value="${esc(u.title || "")}" placeholder="e.g. New fix: G20 pulley carriage rattle"></label>
+            <label class="field full"><span>What changed</span><textarea class="textarea" rows="3" data-f="list.${i}.summary">${esc(u.summary || "")}</textarea></label>
+            <label class="field"><span>Date</span><input class="input" type="date" data-f="list.${i}.date" value="${esc((u.date || "").slice(0, 10))}"></label>
+            <label class="check"><input type="checkbox" data-f="list.${i}.pinned" ${u.pinned ? "checked" : ""}> Pin to the top</label>
+            <label class="field"><span>Equipment type <small>(for the linked fix)</small></span><select class="select" data-f="list.${i}.profile" data-updre="${i}"><option value="">None</option>${Object.entries(S.profiles).map(([k, pr]) => `<option value="${k}" ${u.profile === k ? "selected" : ""}>${esc(pr.label)}</option>`).join("")}</select></label>
+            <label class="field"><span>Linked fault path</span><select class="select" data-f="list.${i}.faultId"><option value="">None</option>${faultsFor(u.profile).map(f => `<option value="${f.id}" ${u.faultId === f.id ? "selected" : ""}>${esc(f.title)}</option>`).join("")}</select></label>
+          </div>
+          <div class="field"><span class="lbl">Products affected <small>(none ticked = all products)</small></span>
+            <div class="pick">${Object.entries(CATS).map(([k, c]) => { const ps = S.products.filter(x => x.cat === k); return ps.length ? `<p class="eyebrow">${esc(c.label)}</p><div class="parts-pick">${ps.map(x => `<label class="check"><input type="checkbox" data-updp="${i}|${x.id}" ${(u.products || []).includes(x.id) ? "checked" : ""}>${esc(x.name)}</label>`).join("")}</div>` : ""; }).join("")}</div>
+          </div>
+          <div class="row"><span class="spacer"></span><button class="btn sm danger" data-upddel="${i}">${ic("i-trash", "ic-sm")}Delete update</button></div>
+        </div></details>`).join("") || `<div class="empty-state">${ic("i-info")}<b>No updates yet</b><span>Add one when a new fix or bulletin is published.</span></div>`}
+    </div>
+    ${savebar(S.live ? `<button class="btn ghost" data-updreset>Reset to none</button>` : "")}`;
+  stagger(M);
+  $("#updAdd").onclick = () => {
+    const u = { id: "u" + Date.now().toString(36), title: "New fix", summary: "", date: new Date().toISOString().slice(0, 10), products: [], profile: "", faultId: "", pinned: false };
+    L.unshift(u); AD.openUpd = u.id; markDirty(); adUpdates();
+    const n = $('[data-f="list.0.title"]'); n.focus(); n.select();
+  };
+}
+document.addEventListener("toggle", e => { const d = e.target; if (d.matches && d.matches("details[data-updid]") && d.open) AD.openUpd = d.dataset.updid; }, true);
+document.addEventListener("change", e => {
+  if (AD.section !== "updates" || !AD.draft) return;
+  const t = e.target;
+  const p = t.closest("[data-updp]");
+  if (p) { const [i, id] = p.dataset.updp.split("|"); const u = AD.draft.list[+i]; u.products = u.products || []; u.products = p.checked ? [...new Set([...u.products, id])] : u.products.filter(x => x !== id); markDirty(); return; }
+  if (t.closest("[data-updre]")) { const i = +t.dataset.updre; AD.draft.list[i].faultId = ""; markDirty(); adUpdates(); }
+});
+document.addEventListener("click", async e => {
+  if (AD.section !== "updates" || !AD.draft) return;
+  const d = e.target.closest("[data-upddel]");
+  if (d) { const u = AD.draft.list[+d.dataset.upddel]; if (!(await confirmBox(`Delete “${u.title}”?`, "It's removed from the draft. Save to publish.", "Delete"))) return; AD.draft.list.splice(+d.dataset.upddel, 1); markDirty(); adUpdates(); }
+  if (e.target.closest("[data-updreset]")) resetDoc("content/updates", "Updates", () => { S.updates = []; });
+});
+
+
+/* =====================================================================
+   PARTS LIST IMPORT (Admin → Missing parts)
+   Accepts CSV/TSV or a pasted list. Claude can tidy a messy paste when
+   the sample capability is available.
+   ===================================================================== */
+const GROUP_HINTS = [
+  [/bolt|screw|nut|washer|hardware|fastener|fixing|hex|allen|spanner|tool/i, "Hardware packs"],
+  [/cable|pulley|wire|sheave|carabiner/i, "Cables & pulleys"],
+  [/plate|stack|weight|selector|guide rod/i, "Weight stack"],
+  [/pad|upholstery|seat|backrest|cushion|roller pad/i, "Upholstery & pads"],
+  [/console|monitor|sensor|battery|wire harness|display/i, "Electronics"],
+  [/handle|strap|bar$|lat bar|attachment|accessor|hook|j-hook|horn/i, "Attachments & accessories"],
+  [/bearing|pin|spring|chain|belt|wheel|roller|pivot|axle|crank|pedal/i, "Moving parts"]
+];
+const guessGroup = n => (GROUP_HINTS.find(([re]) => re.test(n)) || [, "Frame & structure"])[1];
+const guessPre = t => /pre-?install|pre-?fit|factory fitted|assembled/i.test(t) ? "yes" : /partly|some |partial/i.test(t) ? "partial" : "no";
+function parseRows(text) {
+  const lines = text.replace(/\r/g, "").split("\n").map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return [];
+  const delim = lines[0].includes("\t") ? "\t" : (lines[0].match(/,/g) || []).length >= 1 ? "," : null;
+  const splitLine = l => {
+    if (!delim) return [l];
+    const out = []; let cur = "", q = false;
+    for (const ch of l) {
+      if (ch === '"') { q = !q; continue; }
+      if (ch === delim && !q) { out.push(cur.trim()); cur = ""; continue; }
+      cur += ch;
+    }
+    out.push(cur.trim()); return out;
+  };
+  const rows = lines.map(splitLine);
+  let head = null, start = 0;
+  const first = rows[0].map(c => c.toLowerCase());
+  if (first.some(c => /part|item|description|name/.test(c)) && rows.length > 1) { head = first; start = 1; }
+  const col = (r, names) => { if (!head) return ""; const i = head.findIndex(h => names.some(n => h.includes(n))); return i < 0 ? "" : (r[i] || ""); };
+  return rows.slice(start).map(r => {
+    const name = (head ? col(r, ["part", "item", "description", "name"]) : r[0]) || "";
+    if (!name || /^(qty|quantity|no\.?|#)$/i.test(name)) return null;
+    const cleaned = name.replace(/^\s*(\d+[.)]|[-•*])\s*/, "").replace(/\s*[xX]\s*\d+$/, "").trim();
+    if (!cleaned || cleaned.length < 2) return null;
+    const ships = head ? col(r, ["ship", "supplied", "fitted", "pre"]) : "";
+    return {
+      name: cleaned,
+      partNo: head ? col(r, ["part no", "part number", "sku", "code", "ref"]) : (r[1] && /^[A-Z0-9][A-Z0-9._-]{2,}$/i.test(r[1]) ? r[1] : ""),
+      group: (head && MP_GROUPS.find(g => g.toLowerCase() === col(r, ["group", "category", "section"]).toLowerCase())) || guessGroup(cleaned),
+      pre: ships ? guessPre(ships) : "no",
+      where: head ? col(r, ["where", "location", "box"]) : "",
+      looks: head ? col(r, ["looks", "appearance", "detail"]) : ""
+    };
+  }).filter(Boolean);
+}
+async function aiParse(text) {
+  const sample = S.sample; if (!sample) return null;
+  const out = await sample.json([{ role: "user", content:
+`Turn this equipment parts list into JSON. Return ONLY a JSON array, no prose.
+Each element: {"name": string, "partNo": string, "group": one of ${JSON.stringify(MP_GROUPS)}, "pre": "yes"|"partial"|"no"}.
+"pre" means how it reaches the customer: "yes" = pre-installed at the factory, "partial" = some pre-fitted, "no" = packed loose.
+Skip quantities, page numbers, headings and anything that is not a physical part. Keep the original wording of part names.
+
+LIST:
+${text.slice(0, 12000)}` }], { modelTier: "quick", cache: false });
+  return Array.isArray(out) ? out.filter(r => r && r.name).map(r => ({
+    name: String(r.name).slice(0, 120), partNo: String(r.partNo || "").slice(0, 40),
+    group: MP_GROUPS.includes(r.group) ? r.group : guessGroup(String(r.name)),
+    pre: ["yes", "partial", "no"].includes(r.pre) ? r.pre : "no", where: "", looks: ""
+  })) : null;
+}
+function importPanel() {
+  const rows = AD.impRows || [];
+  return `<div class="imp">
+    <div class="row"><b>Import a parts list</b><span class="spacer"></span><button class="btn sm ghost" id="impClose">${ic("i-x", "ic-sm")}Close</button></div>
+    <p class="small muted" style="margin:0">Upload a CSV or text file, or paste the list from the manual. Columns are optional: part, part no, group, ships, where, looks.</p>
+    <label class="drop" for="impFile">${ic("i-upload")}<b id="impName">${AD.impFile ? esc(AD.impFile) : "Choose a CSV, TSV or text file"}</b><span class="small muted">or paste below</span>
+      <input type="file" id="impFile" class="sr" accept=".csv,.tsv,.txt,text/plain,text/csv"></label>
+    <label class="field"><span>Paste a parts list</span><textarea class="textarea" id="impText" rows="5" placeholder="One part per line, or CSV with a header row">${esc(AD.impText || "")}</textarea></label>
+    <div class="row">
+      <button class="btn" id="impParse">${ic("i-check", "ic-sm")}Read list</button>
+      ${S.sample ? `<button class="btn" id="impAi">${ic("i-info", "ic-sm")}Tidy with Claude</button>` : ""}
+      <span class="spacer"></span>
+      <span class="small muted">${rows.length ? rows.length + " parts ready" : ""}</span>
+    </div>
+    ${rows.length ? `<div class="prev"><table><thead><tr><th style="width:36px"><span class="sr">Include</span></th><th>Part</th><th style="width:130px">Part no.</th><th style="width:190px">Group</th><th style="width:150px">How it ships</th></tr></thead><tbody>
+      ${rows.map((r, i) => `<tr>
+        <td><input type="checkbox" data-impk="${i}" ${r.skip ? "" : "checked"} aria-label="Include ${esc(r.name)}"></td>
+        <td><input type="text" data-impf="${i}|name" value="${esc(r.name)}"></td>
+        <td><input type="text" data-impf="${i}|partNo" value="${esc(r.partNo || "")}"></td>
+        <td><select data-impf="${i}|group">${MP_GROUPS.map(g => `<option ${r.group === g ? "selected" : ""}>${g}</option>`).join("")}</select></td>
+        <td><select data-impf="${i}|pre">${Object.entries(PRE).filter(([k]) => k !== "not").map(([k, v]) => `<option value="${k}" ${r.pre === k ? "selected" : ""}>${v.label}</option>`).join("")}</select></td>
+      </tr>`).join("")}
+    </tbody></table></div>
+    <div class="row"><button class="btn primary" id="impAdd">${ic("i-plus", "ic-sm")}Add to this SKU</button><button class="btn" id="impReplace">Replace the whole list</button><span class="spacer"></span><button class="btn ghost" id="impClear">Clear</button></div>` : ""}
+  </div>`;
+}
+function bindImport() {
+  const f = $("#impFile"); if (!f) return;
+  f.onchange = async () => {
+    const file = f.files[0]; if (!file) return;
+    if (file.size > 2 * 1048576) return toast("File is over 2 MB", true);
+    AD.impFile = file.name; AD.impText = await file.text();
+    AD.impRows = parseRows(AD.impText); adMissingSku(); toast(`${AD.impRows.length} parts read`);
+  };
+  $("#impText").oninput = e => { AD.impText = e.target.value; };
+  $("#impClose").onclick = () => { AD.import = false; adMissingSku(); };
+  const clr = $("#impClear");
+  if (clr) clr.onclick = () => { AD.impRows = null; AD.impText = ""; AD.impFile = ""; adMissingSku(); };
+  $("#impParse").onclick = () => {
+    AD.impRows = parseRows(AD.impText || "");
+    if (!AD.impRows.length) return toast("Nothing recognised in that list", true);
+    adMissingSku(); toast(`${AD.impRows.length} parts read`);
+  };
+  const ai = $("#impAi");
+  if (ai) ai.onclick = async e => {
+    const text = AD.impText || ""; if (!text.trim()) return toast("Paste or upload a list first", true);
+    busy(e.currentTarget, true, "Reading…");
+    try {
+      const rows = await aiParse(text);
+      busy(e.currentTarget, false);
+      if (!rows || !rows.length) return toast("Claude couldn't find parts in that list", true);
+      AD.impRows = rows; adMissingSku(); toast(`${rows.length} parts sorted by Claude. Check them before adding.`);
+    } catch (err) { busy(e.currentTarget, false); toast(err && err.code === "not_granted" ? "Claude isn't available for this page" : "Couldn't read that list. Try “Read list” instead.", true); }
+  };
+  const take = () => (AD.impRows || []).filter(r => !r.skip).map(r => {
+    const it = mp(r.name, r.group, r.pre, r.where || "", r.looks || "");
+    it.id += "-" + Math.random().toString(36).slice(2, 7); it.partNo = r.partNo || ""; return it;
+  });
+  const add = $("#impAdd"), rep = $("#impReplace");
+  if (add) add.onclick = () => { const n = take(); if (!n.length) return toast("Tick at least one part", true); AD.draft.items = [...AD.draft.items, ...n]; AD.import = false; AD.impRows = null; AD.impText = ""; markDirty(); adMissingSku(); toast(`${n.length} parts added. Save to publish.`); };
+  if (rep) rep.onclick = async () => {
+    const n = take(); if (!n.length) return toast("Tick at least one part", true);
+    if (!(await confirmBox("Replace the whole list?", "The current parts for this SKU are removed from the draft and replaced.", "Replace"))) return;
+    AD.draft.items = n; AD.import = false; AD.impRows = null; AD.impText = ""; markDirty(); adMissingSku(); toast(`List replaced with ${n.length} parts. Save to publish.`);
+  };
+}
+document.addEventListener("change", e => {
+  const k = e.target.closest("[data-impk]"); if (k) { AD.impRows[+k.dataset.impk].skip = !k.checked; return; }
+  const f = e.target.closest("[data-impf]");
+  if (f) { const [i, key] = f.dataset.impf.split("|"); AD.impRows[+i][key] = f.value; }
+});
+document.addEventListener("input", e => { const f = e.target.closest("[data-impf]"); if (f) { const [i, key] = f.dataset.impf.split("|"); AD.impRows[+i][key] = f.value; } });
+
 
 /* ---------- Global search ---------- */
 let INDEX = [];
@@ -2960,7 +3321,7 @@ function search() {
   rEl.innerHTML = hits.length ? groups.map(g => {
     const gi = hits.filter(h => h.type === g); if (!gi.length) return "";
     return `<div class="rgroup eyebrow" role="presentation">${g === "Accessory" ? "Accessories" : g + "s"}</div>` + gi.map(h => { const i = n++; return `<button class="ritem" role="option" data-hit="${i}" id="hit${i}" aria-selected="false" tabindex="-1">${ic(h.icon)}<span><b>${esc(h.title)}</b><small>${esc(h.sub)}</small></span></button>`; }).join("");
-  }).join("") : `<div class="rempty">No results for “${esc(v)}”. Try a model name, SKU or symptom.</div>`;
+  }).join("") : `${(track("searches", v.slice(0, 40)), "")}<div class="rempty">No results for “${esc(v)}”. Try a model name, SKU or symptom.</div>`;
   highlight();
   rEl.classList.add("open"); qEl.setAttribute("aria-expanded", "true");
 }
@@ -2991,7 +3352,7 @@ document.addEventListener("keydown", e => {
    ADMIN
    ===================================================================== */
 const AD = { section: "customers", dirty: false, draft: null, key: null, fault: null, preselect: null, editDoc: null, group: null, freq: "Daily", file: null, pickQ: "" };
-const ASECTIONS = [["customers", "Customers", "i-lock"], ["docs", "Documents", "i-file"], ["faults", "Fault guides", "i-wrench"], ["parts", "Parts & numbers", "i-settings"], ["missing", "Missing parts", "i-box"], ["accessories", "Accessories", "i-plus"], ["products", "Products", "i-stack"], ["settings", "Settings", "i-phone"]];
+const ASECTIONS = [["customers", "Customers", "i-lock"], ["updates", "Updates", "i-info"], ["insights", "Insights", "i-stack"], ["docs", "Documents", "i-file"], ["faults", "Fault guides", "i-wrench"], ["parts", "Parts & numbers", "i-settings"], ["missing", "Missing parts", "i-box"], ["accessories", "Accessories", "i-plus"], ["products", "Products", "i-stack"], ["settings", "Settings", "i-phone"]];
 
 function getPath(o, path) { return path.split(".").reduce((a, k) => (a == null ? a : a[k]), o); }
 function setPath(o, path, v) { const ks = path.split("."); let c = o; ks.slice(0, -1).forEach((k, i) => { if (c[k] == null) c[k] = /^\d+$/.test(ks[i + 1]) ? [] : {}; c = c[k]; }); c[ks[ks.length - 1]] = v; }
@@ -3044,7 +3405,7 @@ function renderAdmin() {
   if (!isAdminAcct()) { go("home"); return; }
   $("#anav").hidden = false;
   $("#anav").innerHTML = ASECTIONS.map(([k, l, i]) => `<button data-asec="${k}" aria-current="${AD.section === k}">${ic(i)}${l}</button>`).join("");
-  ({ docs: adDocs, faults: adFaults, parts: adParts, products: adProducts, missing: adMissingSku, accessories: adAccessories, customers: adCustomers, settings: adSettings })[AD.section]();
+  ({ docs: adDocs, faults: adFaults, parts: adParts, products: adProducts, missing: adMissingSku, accessories: adAccessories, customers: adCustomers, updates: adUpdates, insights: adInsights, settings: adSettings })[AD.section]();
   animateIn($("#amain"), "fade");
 }
 document.addEventListener("click", async e => {
@@ -3060,6 +3421,7 @@ document.addEventListener("input", e => {
   if (t.dataset.t === "csv") v = v.split(",").map(s => s.trim()).filter(Boolean);
   setPath(AD.draft, t.dataset.f, v);
   markDirty();
+  if (/\.pre$/.test(t.dataset.f)) { const d = t.closest("details"); const b = d && d.querySelector("summary .badge"); if (b) b.outerHTML = preBadge(v); }
   if (t.dataset.live) { const el = document.getElementById(t.dataset.live); if (el) el.textContent = v || "Untitled"; }
 });
 document.addEventListener("change", e => { const t = e.target.closest("[data-f]"); if (t && (t.type === "checkbox" || t.tagName === "SELECT")) t.dispatchEvent(new Event("input", { bubbles: true })); });
@@ -3089,6 +3451,7 @@ async function saveSection(btn) {
     else if (AD.section === "accessories") { const bad = d.list.find(a => !String(a.name).trim()); if (bad) throw { code: "local", message: "Every accessory needs a name." }; await dbWrite("content/accessories", { list: clone(d.list) }); S.accessories = clone(d.list); }
     else if (AD.section === "missing") { const bad = d.items.find(i => !String(i.name).trim()); if (bad) throw { code: "local", message: "Every part needs a name." }; await dbWrite("missingsku/" + AD.mpProd, { items: clone(d.items) }); S.missingSku[AD.mpProd] = clone(d.items); }
     else if (AD.section === "customers") { await saveCustomer(); }
+    else if (AD.section === "updates") { const bad = d.list.find(u => !String(u.title).trim()); if (bad) throw { code: "local", message: "Every update needs a title." }; await dbWrite("content/updates", { list: clone(d.list) }); S.updates = clone(d.list); }
     else if (AD.section === "settings") { await dbWrite("content/settings", clone(d)); S.settings = clone(d); }
     markDirty(false); buildIndex(); toast("Saved. Live for all distributors.");
     busy(btn, false); renderAdmin(); return;
@@ -3351,6 +3714,7 @@ function adProducts() {
           <label class="field"><span>Family / group</span><input class="input" data-f="list.${i}.family" value="${esc(p.family)}"></label>
           <label class="field"><span>Fault guide used</span><select class="select" data-f="list.${i}.profile">${Object.entries(S.profiles).map(([k, pr]) => `<option value="${k}" ${p.profile === k ? "selected" : ""}>${esc(pr.label)}</option>`).join("")}</select></label>
           <label class="field"><span>Manual URL</span><input class="input" type="url" data-f="list.${i}.manual" value="${esc(p.manual || "")}" placeholder="https://"></label>
+          <label class="field full"><span>Serial number location <small>what the agent tells the customer</small></span><textarea class="textarea" rows="2" data-f="list.${i}.serial" placeholder="${esc(SERIAL_DEFAULT[p.profile] || "")}">${esc(p.serial || "")}</textarea></label>
         </div>
         <div class="row"><label class="check"><input type="checkbox" data-f="list.${i}.hidden" ${p.hidden ? "checked" : ""}> Hide from distributors</label><span class="spacer"></span><button class="btn sm danger" data-delprod="${i}">${ic("i-trash", "ic-sm")}Delete model</button></div>
         </div></details>`).join("") || `<div class="empty-state">No models match.</div>`}
@@ -3427,6 +3791,7 @@ async function initLive() {
       S.db = db;
       const err = () => {};
       db.doc("content/products").onSnapshot(s => { S.products = s.exists && Array.isArray(s.data().list) ? clone(s.data().list) : clone(DEFAULTS.products); onRemote(); }, err);
+      db.doc("content/updates").onSnapshot(s => { S.updates = s.exists && Array.isArray(s.data().list) ? clone(s.data().list) : []; onRemote(); }, err);
       db.doc("content/accessories").onSnapshot(s => { S.accessories = s.exists && Array.isArray(s.data().list) ? clone(s.data().list) : clone(DEFAULTS.accessories); onRemote(); }, err);
       db.collection("missing").onSnapshot(qs => {
         const next = clone(DEFAULTS.missing);
@@ -3444,6 +3809,10 @@ async function initLive() {
       db.collection("docs").onSnapshot(qs => { S.docs = qs.docs.map(d => ({ id: d.id, ...clone(d.data()) })).filter(d => d.assetId); onRemote(); }, err);
     }
   } catch (e) { if (ACCOUNTS === null) onAccounts([]); }
+  try {
+    const sample = await window.claude.use("sample");
+    if (sample) S.sample = sample;
+  } catch (e) {}
   try {
     const assets = await window.claude.use("assets");
     if (assets && S.db) {
