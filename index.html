@@ -3782,8 +3782,24 @@ function onRemote() {
   if ($("#drawer").classList.contains("open")) { /* keep drawer as is */ }
   renderView();
 }
+/* =====================================================================
+   SEED ACCOUNTS — used only when the page is served as a plain static
+   file (no Claude db runtime), e.g. GitHub Pages. Inside the Claude
+   artifact runtime the real "accounts" collection is used instead and
+   these are ignored. Credentials are readable in this file's source,
+   so treat them as demo access, not security.
+   ===================================================================== */
+const SEED_ACCOUNTS = [
+  { id: "seed-demo", name: "Demo Distributor", username: "demo",
+    salt: "d3m0-fusa-01", hash: "214c1a2080d4407832438228fe723cbfd1c906d05e65f1bbb7c299db880d0aa1",
+    logo: null, products: DEFAULTS.products.map(p => p.id) },
+  { id: "seed-dealer", name: "Sample Dealer", username: "dealer",
+    salt: "d3m0-fusa-02", hash: "a4f178feae8f985a9a5806a49d2ca0d2bfbcb9a9fcb44d07c2821055258da450",
+    logo: null, products: DEFAULTS.products.map(p => p.id) }
+];
+
 async function initLive() {
-  if (!window.claude || typeof window.claude.use !== "function") { onAccounts([]); return; }
+  if (!window.claude || typeof window.claude.use !== "function") { onAccounts(clone(SEED_ACCOUNTS)); return; }
   try {
     const db = await window.claude.use("db");
     if (!db) onAccounts([]);
